@@ -25,7 +25,7 @@ export function useEmployees(filters?: { divisionId?: string; status?: string; s
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
-    let query = supabase.from('employees').select('*, division!inner(*)').order('name');
+    let query = supabase.from('employees').select('*, division:divisions(*)').order('name');
     if (filters?.divisionId) query = query.eq('division_id', filters.divisionId);
     if (filters?.status && filters.status !== 'all') query = query.eq('status', filters.status);
     if (filters?.search) {
@@ -90,7 +90,7 @@ export function useEmployeesByDivision(divisionCode: string) {
     setLoading(true);
     const { data, error } = await supabase
       .from('employees')
-      .select('*, division!inner(*)')
+      .select('*, division:divisions!inner(*)')
       .eq('division.code', divisionCode)
       .neq('status', 'inactive')
       .order('name');

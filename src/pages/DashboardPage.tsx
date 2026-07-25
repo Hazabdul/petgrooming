@@ -45,7 +45,7 @@ export function DashboardPage() {
       setLoading(true);
       setError(null);
       try {
-        const { data: employees } = await supabase.from('employees').select('*, division!inner(*)') as { data: Employee[] | null };
+        const { data: employees } = await supabase.from('employees').select('*, division:divisions(*)') as { data: Employee[] | null };
         const { data: vans } = await supabase.from('vans').select('*') as { data: Van[] | null };
         const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
